@@ -1,0 +1,1 @@
+var StMartyrBride = require('./lib/app.js').init();
