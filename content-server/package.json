@@ -7,7 +7,8 @@
   },
   "dependencies": {
     "express": "3.4.0",
-    "jade": "*"
+    "jade": "*",
+    "kaiseki": "~0.4.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
