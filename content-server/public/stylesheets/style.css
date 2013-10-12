@@ -1,8 +1,30 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+input, textarea {
+  width: 100%;
+  font-size: 24px;
+}
+textarea {
+  height: 200px;
 }
 
-a {
-  color: #00B7FF;
+.message {
+  font-family: "Arial Rounded Mt", "Arial", sans-serif;
+}
+
+.message header {
+  border-top: 2px solid black;
+  border-bottom: 1px solid black;
+  font-size: 14px;
+  padding: 5px 0;
+  margin-bottom: 20px;
+}
+
+.message header .label {
+  width: 50px;
+  display: block;
+  float: left;
+}
+
+.message .body {
+  font-weight: 900;
+  font-size: 24px;
 }

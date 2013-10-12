@@ -20,6 +20,7 @@ exports.init = ->
 	if ('development' == app.get('env')) then app.use express.errorHandler()
 
 	app.get('/', routes.index)
+	app.get('/message', routes.message)
 
 	http.createServer(app).listen app.get('port'), ->
 	  console.log('St. Martyr Bride running on port ' + app.get('port'))

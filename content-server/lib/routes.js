@@ -3,3 +3,7 @@ exports.index = function(req, res) {
     title: 'Express'
   });
 };
+
+exports.message = function(req, res) {
+  return res.render('message');
+};
