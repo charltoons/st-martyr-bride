@@ -13,6 +13,7 @@ module.exports = (grunt) ->
           bare: true
         files:
           'lib/app.js': 'src/app.coffee'
+          'lib/db.js': 'src/db.coffee'
           'lib/routes.js': 'src/routes.coffee'
           'lib/twitter-watcher.js': 'src/twitter-watcher.coffee'
 
