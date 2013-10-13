@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
+var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -132,7 +132,7 @@ getRandomAnswer = function(type, cb) {
         return cb(err);
       } else {
         randomAnswer = body[Math.floor(Math.random() * body.length)];
-        return cb(err, randomAnswer);
+        return cb(err, randomAnswer.objectId);
       }
     });
   }
@@ -157,6 +157,24 @@ createMessage = function(questionId, cb) {
   });
 };
 
+addAnswerToMessage = function(answerId, messageId, cb) {
+  var answer;
+  answer = {
+    answer: {
+      __type: 'Pointer',
+      className: 'Answer',
+      objectId: answerId
+    }
+  };
+  return kaiseki.updateObject('Message', messageId, answer, function(err, res, body, success) {
+    if (!success) {
+      return cb(err);
+    } else {
+      return cb(null, true);
+    }
+  });
+};
+
 exports.createQuestion = createQuestion;
 
 exports.createAnswer = createAnswer;
@@ -166,3 +184,5 @@ exports.getAnswers = getAnswers;
 exports.getRandomAnswer = getRandomAnswer;
 
 exports.createMessage = createMessage;
+
+exports.addAnswerToMessage = addAnswerToMessage;

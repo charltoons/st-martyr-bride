@@ -38,7 +38,13 @@ stream.on('tweet', function(tweet) {
   };
   db.createQuestion(question, function(err, questionId) {
     return db.createMessage(questionId, function(err, messageId) {
-      return console.log(messageId);
+      return db.getRandomAnswer('test', function(err, answerId) {
+        return db.addAnswerToMessage(answerId, messageId, function(err, success) {
+          if (success != null) {
+            return console.log('success');
+          }
+        });
+      });
     });
   });
   return tweetEvent.emit('tweet');

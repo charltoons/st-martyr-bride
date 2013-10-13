@@ -83,7 +83,7 @@ getRandomAnswer = (type, cb)->
             unless success then cb(err)
             else 
                 randomAnswer = body[Math.floor(Math.random() * body.length)]
-                cb(err, randomAnswer)
+                cb(err, randomAnswer.objectId)
 
 createMessage = (questionId, cb)->
     m = 
@@ -98,8 +98,20 @@ createMessage = (questionId, cb)->
         else
             cb(null, body.objectId)
 
+addAnswerToMessage = (answerId, messageId, cb)->
+    answer = 
+        answer: 
+            __type: 'Pointer'
+            className: 'Answer'
+            objectId: answerId
+
+    kaiseki.updateObject 'Message', messageId, answer, (err, res, body, success)->
+        unless success then cb(err)
+        else cb(null, true)
+
 exports.createQuestion = createQuestion
 exports.createAnswer = createAnswer
 exports.getAnswers = getAnswers
 exports.getRandomAnswer = getRandomAnswer
 exports.createMessage = createMessage
+exports.addAnswerToMessage = addAnswerToMessage
