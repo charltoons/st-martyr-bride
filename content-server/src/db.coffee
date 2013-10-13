@@ -24,7 +24,7 @@ getPatron = (handle, cb)->
         unless success then cb(err)
         else 
             switch body.length
-                when 1 then cb(null, body[0])
+                when 1 then cb(null, body[0].objectId)
                 when 0 then cb(null, false)
                 else cb('Error: invalid number of users with handle '+handle+'.')
 
@@ -83,15 +83,33 @@ getRandomAnswer = (type, cb)->
             else 
                 randomAnswer = body[Math.floor(Math.random() * body.length)]
                 cb(err, randomAnswer)
+
+createMessage = (questionId, cb)->
+    m = 
+        question:
+            __type: 'Pointer'
+            className: 'Question'
+            objectId: questionId
+        isPrinted: false
+
+    kaiseki.createObject 'Message', m, (err, res, body, success)->
+        unless success then cb(err)
+        else
+            cb(null, body.objectId)
         
 
 
-# question = 
-#     patron: 
-#         first: 'Roseanne'
-#         handle: '@rb27332491'
-#         last: 'Barr'
-#     body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?'
+question = 
+    patron: 
+        first: 'Roseanne'
+        handle: '@rb27332491'
+        last: 'Barr'
+    body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?'
+    tweetUrl: ''
+createQuestion question, (err, questionId)->
+    createMessage questionId, (err, messageId)->
+        console.log messageId
+
 exports.createQuestion = createQuestion
 exports.createAnswer = createAnswer
 exports.getAnswers = getAnswers

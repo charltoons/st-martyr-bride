@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, createAnswer, createPatron, createQuestion, getAnswers, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
+var APP_ID, Kaiseki, REST_API_KEY, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getPatron, getRandomAnswer, kaiseki, newQuestion, question, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -40,7 +40,7 @@ getPatron = function(handle, cb) {
     } else {
       switch (body.length) {
         case 1:
-          return cb(null, body[0]);
+          return cb(null, body[0].objectId);
         case 0:
           return cb(null, false);
         default:
@@ -136,6 +136,41 @@ getRandomAnswer = function(type, cb) {
     });
   }
 };
+
+createMessage = function(questionId, cb) {
+  var m;
+  m = {
+    question: {
+      __type: 'Pointer',
+      className: 'Question',
+      objectId: questionId
+    },
+    isPrinted: false
+  };
+  return kaiseki.createObject('Message', m, function(err, res, body, success) {
+    if (!success) {
+      return cb(err);
+    } else {
+      return cb(null, body.objectId);
+    }
+  });
+};
+
+question = {
+  patron: {
+    first: 'Roseanne',
+    handle: '@rb27332491',
+    last: 'Barr'
+  },
+  body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?',
+  tweetUrl: ''
+};
+
+createQuestion(question, function(err, questionId) {
+  return createMessage(questionId, function(err, messageId) {
+    return console.log(messageId);
+  });
+});
 
 exports.createQuestion = createQuestion;
 
