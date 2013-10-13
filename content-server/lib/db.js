@@ -126,24 +126,21 @@ getRandomAnswer = function(type, cb) {
       }
     };
     return kaiseki.getObjects('Answer', params, function(err, res, body, success) {
+      var randomAnswer;
       if (!success) {
         return cb(err);
       } else {
-        return cb(err, body);
+        randomAnswer = body[Math.floor(Math.random() * body.length)];
+        return cb(err, randomAnswer);
       }
     });
   }
 };
-
-getRandomAnswer('test', function(err, results) {
-  var randomAnswer;
-  console.log(err);
-  randomAnswer = results[Math.floor(Math.random() * results.length)];
-  return console.log(randomAnswer);
-});
 
 exports.createQuestion = createQuestion;
 
 exports.createAnswer = createAnswer;
 
 exports.getAnswers = getAnswers;
+
+exports.getRandomAnswer = getRandomAnswer;

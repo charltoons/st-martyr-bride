@@ -81,12 +81,8 @@ getRandomAnswer = (type, cb)->
         kaiseki.getObjects 'Answer', params, (err, res, body, success)->
             unless success then cb(err)
             else 
-                cb(err, body)
-
-getRandomAnswer 'test', (err, results)->
-    console.log err
-    randomAnswer = results[Math.floor(Math.random() * results.length)]
-    console.log randomAnswer
+                randomAnswer = body[Math.floor(Math.random() * body.length)]
+                cb(err, randomAnswer)
         
 
 
@@ -99,3 +95,4 @@ getRandomAnswer 'test', (err, results)->
 exports.createQuestion = createQuestion
 exports.createAnswer = createAnswer
 exports.getAnswers = getAnswers
+exports.getRandomAnswer = getRandomAnswer
