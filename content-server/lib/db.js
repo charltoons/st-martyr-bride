@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, createPatron, createQuestion, getAnswers, getPatron, kaiseki, newQuestion, question, settings;
+var APP_ID, Kaiseki, REST_API_KEY, createAnswer, createPatron, createQuestion, getAnswers, getPatron, kaiseki, newQuestion, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -62,8 +62,8 @@ createPatron = function(patron, cb) {
 };
 
 newQuestion = function(patronId, body, cb) {
-  'new question';
   var q;
+  console.log('new question');
   q = {
     patron: {
       __type: 'Pointer',
@@ -102,18 +102,26 @@ createQuestion = function(question, cb) {
   });
 };
 
-question = {
-  patron: {
-    first: 'Roseanne',
-    handle: '@rb27332491',
-    last: 'Barr'
-  },
-  body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?'
+createAnswer = function(body, type, cb) {
+  var a;
+  a = {
+    body: body,
+    type: type
+  };
+  return kaiseki.createObject('Answer', a, function(err, res, body, success) {
+    if (!success) {
+      return cb(err);
+    } else {
+      return cb(null, body.objectId);
+    }
+  });
 };
 
-createQuestion(question, function(err, result) {
+createAnswer('You cannot leave a place until you make peace with it.', 'test', function(err, result) {
   console.log(err);
   return console.log(result);
 });
+
+exports.createQuestion = createQuestion;
 
 exports.getAnswers = getAnswers;

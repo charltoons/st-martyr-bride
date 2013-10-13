@@ -35,7 +35,7 @@ createPatron = (patron, cb)->
         else cb(null, body.objectId)
 
 newQuestion = (patronId, body, cb)->
-    'new question'
+    console.log 'new question'
     q = 
         patron: 
             __type: 'Pointer'
@@ -61,14 +61,26 @@ createQuestion = (question, cb)->
             console.log 'we already have a patron with that handle' 
             newQuestion result, question.body, cb
 
-question = 
-    patron: 
-        first: 'Roseanne'
-        handle: '@rb27332491'
-        last: 'Barr'
-    body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?'
-createQuestion question, (err, result)->
+createAnswer = (body, type, cb)->
+    a =
+        body: body
+        type: type
+    kaiseki.createObject 'Answer', a, (err, res, body, success)->
+        unless success then cb(err)
+        else
+            cb(null, body.objectId)
+
+createAnswer 'You cannot leave a place until you make peace with it.', 'test', (err, result)->
     console.log err
     console.log result
+
+
+# question = 
+#     patron: 
+#         first: 'Roseanne'
+#         handle: '@rb27332491'
+#         last: 'Barr'
+#     body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?'
+exports.createQuestion = createQuestion
 
 exports.getAnswers = getAnswers
