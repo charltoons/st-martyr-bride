@@ -158,12 +158,11 @@ createMessage = function(questionId, cb) {
 
 question = {
   patron: {
-    first: 'Roseanne',
-    handle: '@rb27332491',
-    last: 'Barr'
+    name: 'Roseanne Barr',
+    handle: '@rb27332491'
   },
   body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?',
-  tweetUrl: ''
+  tweetUrl: 'https://twitter.com/rb27332491/status/389521185433989121'
 };
 
 createQuestion(question, function(err, questionId) {

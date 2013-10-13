@@ -3,6 +3,9 @@ http 	= require 'http'
 path 	= require 'path'
 routes  = require './routes.js'
 
+#start the twitter-watcher
+twitter = require './twitter-watcher.js'
+
 exports.init = ->
 	app = express()
 

@@ -1,4 +1,4 @@
-var express, http, path, routes;
+var express, http, path, routes, twitter;
 
 express = require('express');
 
@@ -7,6 +7,8 @@ http = require('http');
 path = require('path');
 
 routes = require('./routes.js');
+
+twitter = require('./twitter-watcher.js');
 
 exports.init = function() {
   var app;
