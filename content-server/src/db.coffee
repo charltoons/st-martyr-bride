@@ -70,9 +70,24 @@ createAnswer = (body, type, cb)->
         else
             cb(null, body.objectId)
 
-createAnswer 'You cannot leave a place until you make peace with it.', 'test', (err, result)->
+# returns a random answer of type type 
+# if no type is specified, then it will return a
+# random answer of any type
+getRandomAnswer = (type, cb)->
+    if type 
+        params = 
+            where:
+                type: type
+        kaiseki.getObjects 'Answer', params, (err, res, body, success)->
+            unless success then cb(err)
+            else 
+                cb(err, body)
+
+getRandomAnswer 'test', (err, results)->
     console.log err
-    console.log result
+    randomAnswer = results[Math.floor(Math.random() * results.length)]
+    console.log randomAnswer
+        
 
 
 # question = 
@@ -82,5 +97,5 @@ createAnswer 'You cannot leave a place until you make peace with it.', 'test', (
 #         last: 'Barr'
 #     body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?'
 exports.createQuestion = createQuestion
-
+exports.createAnswer = createAnswer
 exports.getAnswers = getAnswers

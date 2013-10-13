@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, createAnswer, createPatron, createQuestion, getAnswers, getPatron, kaiseki, newQuestion, settings;
+var APP_ID, Kaiseki, REST_API_KEY, createAnswer, createPatron, createQuestion, getAnswers, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -117,11 +117,33 @@ createAnswer = function(body, type, cb) {
   });
 };
 
-createAnswer('You cannot leave a place until you make peace with it.', 'test', function(err, result) {
+getRandomAnswer = function(type, cb) {
+  var params;
+  if (type) {
+    params = {
+      where: {
+        type: type
+      }
+    };
+    return kaiseki.getObjects('Answer', params, function(err, res, body, success) {
+      if (!success) {
+        return cb(err);
+      } else {
+        return cb(err, body);
+      }
+    });
+  }
+};
+
+getRandomAnswer('test', function(err, results) {
+  var randomAnswer;
   console.log(err);
-  return console.log(result);
+  randomAnswer = results[Math.floor(Math.random() * results.length)];
+  return console.log(randomAnswer);
 });
 
 exports.createQuestion = createQuestion;
+
+exports.createAnswer = createAnswer;
 
 exports.getAnswers = getAnswers;
