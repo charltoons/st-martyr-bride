@@ -34,7 +34,7 @@ createPatron = (patron, cb)->
         unless success then cb(err)
         else cb(null, body.objectId)
 
-newQuestion = (patronId, body, cb)->
+newQuestion = (patronId, body, tweetUrl, cb)->
     console.log 'new question'
     q = 
         patron: 
@@ -42,6 +42,7 @@ newQuestion = (patronId, body, cb)->
             className: 'Patron'
             objectId: patronId
         body: body
+        tweetUrl: tweetUrl
     kaiseki.createObject 'Question', q, (err, res, body, success)->
         unless success then cb(err)
         else
@@ -55,11 +56,11 @@ createQuestion = (question, cb)->
             console.log 'No patron exists with that handle'
             createPatron question.patron, (err, result)->
                 if err? then cb(err)
-                else newQuestion result, question.body, cb
+                else newQuestion result, question.body, question.tweetUrl, cb
                     
         else
             console.log 'we already have a patron with that handle' 
-            newQuestion result, question.body, cb
+            newQuestion result, question.body, question.tweetUrl, cb
 
 createAnswer = (body, type, cb)->
     a =
@@ -96,20 +97,9 @@ createMessage = (questionId, cb)->
         unless success then cb(err)
         else
             cb(null, body.objectId)
-        
-
-
-question = 
-    patron: 
-        name: 'Roseanne Barr'
-        handle: '@rb27332491'
-    body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?'
-    tweetUrl: 'https://twitter.com/rb27332491/status/389521185433989121'
-createQuestion question, (err, questionId)->
-    createMessage questionId, (err, messageId)->
-        console.log messageId
 
 exports.createQuestion = createQuestion
 exports.createAnswer = createAnswer
 exports.getAnswers = getAnswers
 exports.getRandomAnswer = getRandomAnswer
+exports.createMessage = createMessage

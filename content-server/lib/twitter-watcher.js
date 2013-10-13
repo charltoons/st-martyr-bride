@@ -1,8 +1,12 @@
-var T, Twit, settings, stream;
+var T, Twit, db, events, settings, stream, tweetEvent;
 
 Twit = require('twit');
 
 settings = require('../settings.json');
+
+db = require('./db.js');
+
+events = require('events');
 
 T = new Twit({
   consumer_key: settings.twitter.api_key,
@@ -10,6 +14,10 @@ T = new Twit({
   access_token: settings.twitter.access_token,
   access_token_secret: settings.twitter.access_token_secret
 });
+
+stream;
+
+tweetEvent = new events.EventEmitter();
 
 stream = T.stream('statuses/filter', {
   track: '@StMartyrBride'
@@ -28,5 +36,10 @@ stream.on('tweet', function(tweet) {
     body: tweet.text,
     tweetUrl: twitter_url
   };
-  return console.log(question);
+  db.createQuestion(question, function(err, questionId) {
+    return db.createMessage(questionId, function(err, messageId) {
+      return console.log(messageId);
+    });
+  });
+  return tweetEvent.emit('tweet');
 });

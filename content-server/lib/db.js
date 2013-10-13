@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getPatron, getRandomAnswer, kaiseki, newQuestion, question, settings;
+var APP_ID, Kaiseki, REST_API_KEY, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -61,7 +61,7 @@ createPatron = function(patron, cb) {
   });
 };
 
-newQuestion = function(patronId, body, cb) {
+newQuestion = function(patronId, body, tweetUrl, cb) {
   var q;
   console.log('new question');
   q = {
@@ -70,7 +70,8 @@ newQuestion = function(patronId, body, cb) {
       className: 'Patron',
       objectId: patronId
     },
-    body: body
+    body: body,
+    tweetUrl: tweetUrl
   };
   return kaiseki.createObject('Question', q, function(err, res, body, success) {
     if (!success) {
@@ -92,12 +93,12 @@ createQuestion = function(question, cb) {
         if (err != null) {
           return cb(err);
         } else {
-          return newQuestion(result, question.body, cb);
+          return newQuestion(result, question.body, question.tweetUrl, cb);
         }
       });
     } else {
       console.log('we already have a patron with that handle');
-      return newQuestion(result, question.body, cb);
+      return newQuestion(result, question.body, question.tweetUrl, cb);
     }
   });
 };
@@ -156,21 +157,6 @@ createMessage = function(questionId, cb) {
   });
 };
 
-question = {
-  patron: {
-    name: 'Roseanne Barr',
-    handle: '@rb27332491'
-  },
-  body: 'Why do some stores in Tulsa have a "Sorry, we\'re open" sign?',
-  tweetUrl: 'https://twitter.com/rb27332491/status/389521185433989121'
-};
-
-createQuestion(question, function(err, questionId) {
-  return createMessage(questionId, function(err, messageId) {
-    return console.log(messageId);
-  });
-});
-
 exports.createQuestion = createQuestion;
 
 exports.createAnswer = createAnswer;
@@ -178,3 +164,5 @@ exports.createAnswer = createAnswer;
 exports.getAnswers = getAnswers;
 
 exports.getRandomAnswer = getRandomAnswer;
+
+exports.createMessage = createMessage;

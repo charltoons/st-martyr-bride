@@ -1,5 +1,7 @@
 Twit = require 'twit'
 settings = require '../settings.json'
+db = require './db.js'
+events = require 'events'
 
 T = new Twit
     consumer_key: settings.twitter.api_key
@@ -7,9 +9,14 @@ T = new Twit
     access_token: settings.twitter.access_token
     access_token_secret: settings.twitter.access_token_secret
 
+#global scope
+stream 
+tweetEvent = new events.EventEmitter()
 
 stream = T.stream 'statuses/filter', track: '@StMartyrBride'
 
+# init tweet handler
+# exports.init = ->
 stream.on 'tweet', (tweet)-> 
     twitter_url = 'https://twitter.com/'+tweet.user.screen_name+'/status/'+tweet.id_str
     handle = '@'+tweet.user.screen_name
@@ -20,8 +27,15 @@ stream.on 'tweet', (tweet)->
             handle: '@'+tweet.user.screen_name
         body : tweet.text
         tweetUrl: twitter_url
-    console.log question
-    
+
+    # send it to the db
+    db.createQuestion question, (err, questionId)->
+        db.createMessage questionId, (err, messageId)->
+            console.log messageId
+    tweetEvent.emit('tweet')
+    # tweetEvent
+
+
 
 # { created_at: 'Sun Oct 13 22:34:27 +0000 2013',
 #   id: 389519530911105000,
