@@ -30,10 +30,14 @@ stream.on 'tweet', (tweet)->
 
     # send it to the db
     db.createQuestion question, (err, questionId)->
-        db.createMessage questionId, (err, messageId)->
-            db.getRandomAnswer 'test', (err, answerId)->
-                db.addAnswerToMessage answerId, messageId, (err, success)->
-                    console.log 'success' if success?
+        if err? then console.error err
+        else db.createMessage questionId, (err, messageId)->
+            if err? then console.error err
+            else db.getRandomAnswer 'test', (err, answerId)->
+                if err? then console.error err
+                else db.addAnswerToMessage answerId, messageId, (err, success)->
+                    if err? then console.error err
+                    else console.log 'TW: Successfully created new message in db' if success?
     tweetEvent.emit('tweet')
     # tweetEvent
 

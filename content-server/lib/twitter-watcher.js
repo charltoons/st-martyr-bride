@@ -37,15 +37,31 @@ stream.on('tweet', function(tweet) {
     tweetUrl: twitter_url
   };
   db.createQuestion(question, function(err, questionId) {
-    return db.createMessage(questionId, function(err, messageId) {
-      return db.getRandomAnswer('test', function(err, answerId) {
-        return db.addAnswerToMessage(answerId, messageId, function(err, success) {
-          if (success != null) {
-            return console.log('success');
-          }
-        });
+    if (err != null) {
+      return console.error(err);
+    } else {
+      return db.createMessage(questionId, function(err, messageId) {
+        if (err != null) {
+          return console.error(err);
+        } else {
+          return db.getRandomAnswer('test', function(err, answerId) {
+            if (err != null) {
+              return console.error(err);
+            } else {
+              return db.addAnswerToMessage(answerId, messageId, function(err, success) {
+                if (err != null) {
+                  return console.error(err);
+                } else {
+                  if (success != null) {
+                    return console.log('TW: Successfully created new message in db');
+                  }
+                }
+              });
+            }
+          });
+        }
       });
-    });
+    }
   });
   return tweetEvent.emit('tweet');
 });
