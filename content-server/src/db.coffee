@@ -15,7 +15,6 @@ getAnswers = (cb)->
         else cb(null, body)
 
 getPatron = (handle, cb)->
-    console.log 'get patron '+handle
     params = 
         where:
             handle: handle
@@ -29,13 +28,12 @@ getPatron = (handle, cb)->
                 else cb('Error: invalid number of users with handle '+handle+'.')
 
 createPatron = (patron, cb)->
-    console.log 'creating patron '+patron.handle 
+    console.log 'DB: Creating patron '+patron.handle 
     kaiseki.createObject 'Patron', patron, (err, res, body, success)->
         unless success then cb(err)
         else cb(null, body.objectId)
 
 newQuestion = (patronId, body, tweetUrl, cb)->
-    console.log 'new question'
     q = 
         patron: 
             __type: 'Pointer'
@@ -49,17 +47,16 @@ newQuestion = (patronId, body, tweetUrl, cb)->
             cb(null, body.objectId)
 
 createQuestion = (question, cb)->
-    console.log 'creating question'
+    console.log 'DB: Creating question '+question.tweetUrl
     getPatron question.patron.handle, (err, result)->
         if err? then cb(err)
         else if not result
-            console.log 'No patron exists with that handle'
             createPatron question.patron, (err, result)->
                 if err? then cb(err)
                 else newQuestion result, question.body, question.tweetUrl, cb
                     
         else
-            console.log 'we already have a patron with that handle' 
+            console.log 'DB: Another question from '+question.patron.handle 
             newQuestion result, question.body, question.tweetUrl, cb
 
 createAnswer = (body, type, cb)->

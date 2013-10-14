@@ -28,7 +28,6 @@ getAnswers = function(cb) {
 
 getPatron = function(handle, cb) {
   var params;
-  console.log('get patron ' + handle);
   params = {
     where: {
       handle: handle
@@ -51,7 +50,7 @@ getPatron = function(handle, cb) {
 };
 
 createPatron = function(patron, cb) {
-  console.log('creating patron ' + patron.handle);
+  console.log('DB: Creating patron ' + patron.handle);
   return kaiseki.createObject('Patron', patron, function(err, res, body, success) {
     if (!success) {
       return cb(err);
@@ -63,7 +62,6 @@ createPatron = function(patron, cb) {
 
 newQuestion = function(patronId, body, tweetUrl, cb) {
   var q;
-  console.log('new question');
   q = {
     patron: {
       __type: 'Pointer',
@@ -83,12 +81,11 @@ newQuestion = function(patronId, body, tweetUrl, cb) {
 };
 
 createQuestion = function(question, cb) {
-  console.log('creating question');
+  console.log('DB: Creating question ' + question.tweetUrl);
   return getPatron(question.patron.handle, function(err, result) {
     if (err != null) {
       return cb(err);
     } else if (!result) {
-      console.log('No patron exists with that handle');
       return createPatron(question.patron, function(err, result) {
         if (err != null) {
           return cb(err);
@@ -97,7 +94,7 @@ createQuestion = function(question, cb) {
         }
       });
     } else {
-      console.log('we already have a patron with that handle');
+      console.log('DB: Another question from ' + question.patron.handle);
       return newQuestion(result, question.body, question.tweetUrl, cb);
     }
   });
