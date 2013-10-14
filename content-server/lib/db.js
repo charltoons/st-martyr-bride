@@ -129,7 +129,7 @@ getRandomAnswer = function(type, cb) {
         return cb(err);
       } else {
         randomAnswer = body[Math.floor(Math.random() * body.length)];
-        return cb(err, randomAnswer.objectId);
+        return cb(err, randomAnswer.objectId, randomAnswer.body);
       }
     });
   }

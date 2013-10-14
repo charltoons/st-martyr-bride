@@ -15,6 +15,14 @@ tweetEvent = new events.EventEmitter()
 
 stream = T.stream 'statuses/filter', track: '@StMartyrBride'
 
+tweetBack = (answer, handle, tweet_id)->
+    T.post 'statuses/update', 
+        status: handle+', '+answer
+        in_reply_to_status_id: tweet_id,
+        (err, reply)->
+            if err? then console.error err
+            else console.log 'TW: Replied to tweet.'
+
 # init tweet handler
 # exports.init = ->
 stream.on 'tweet', (tweet)-> 
@@ -33,14 +41,15 @@ stream.on 'tweet', (tweet)->
         if err? then console.error err
         else db.createMessage questionId, (err, messageId)->
             if err? then console.error err
-            else db.getRandomAnswer 'test', (err, answerId)->
+            else db.getRandomAnswer 'test', (err, answerId, answerBody)->
                 if err? then console.error err
                 else db.addAnswerToMessage answerId, messageId, (err, success)->
                     if err? then console.error err
-                    else console.log 'TW: Successfully created new message in db' if success?
+                    else 
+                        console.log 'TW: Successfully created new message in db.'
+                        tweetBack(answerBody, question.patron.handle, tweet.id_str)
     tweetEvent.emit('tweet')
     # tweetEvent
-
 
 
 # { created_at: 'Sun Oct 13 22:34:27 +0000 2013',

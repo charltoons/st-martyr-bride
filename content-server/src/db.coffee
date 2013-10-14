@@ -80,7 +80,7 @@ getRandomAnswer = (type, cb)->
             unless success then cb(err)
             else 
                 randomAnswer = body[Math.floor(Math.random() * body.length)]
-                cb(err, randomAnswer.objectId)
+                cb(err, randomAnswer.objectId, randomAnswer.body)
 
 createMessage = (questionId, cb)->
     m = 

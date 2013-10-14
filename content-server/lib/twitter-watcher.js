@@ -1,4 +1,4 @@
-var T, Twit, db, events, settings, stream, tweetEvent;
+var T, Twit, db, events, settings, stream, tweetBack, tweetEvent;
 
 Twit = require('twit');
 
@@ -23,6 +23,19 @@ stream = T.stream('statuses/filter', {
   track: '@StMartyrBride'
 });
 
+tweetBack = function(answer, handle, tweet_id) {
+  return T.post('statuses/update', {
+    status: handle + ', ' + answer,
+    in_reply_to_status_id: tweet_id
+  }, function(err, reply) {
+    if (err != null) {
+      return console.error(err);
+    } else {
+      return console.log('TW: Replied to tweet.');
+    }
+  });
+};
+
 stream.on('tweet', function(tweet) {
   var handle, name, question, twitter_url;
   twitter_url = 'https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str;
@@ -44,7 +57,7 @@ stream.on('tweet', function(tweet) {
         if (err != null) {
           return console.error(err);
         } else {
-          return db.getRandomAnswer('test', function(err, answerId) {
+          return db.getRandomAnswer('test', function(err, answerId, answerBody) {
             if (err != null) {
               return console.error(err);
             } else {
@@ -52,9 +65,8 @@ stream.on('tweet', function(tweet) {
                 if (err != null) {
                   return console.error(err);
                 } else {
-                  if (success != null) {
-                    return console.log('TW: Successfully created new message in db');
-                  }
+                  console.log('TW: Successfully created new message in db.');
+                  return tweetBack(answerBody, question.patron.handle, tweet.id_str);
                 }
               });
             }
