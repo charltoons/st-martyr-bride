@@ -106,6 +106,26 @@ addAnswerToMessage = (answerId, messageId, cb)->
         unless success then cb(err)
         else cb(null, true)
 
+getMessage = (messageId, cb)->
+    kaiseki.getObjects 'Message', where: objectId: messageId, (err, res, body, success)->
+        unless success then cb(err)
+        else
+            message = body[0] 
+            kaiseki.getObjects 'Answer', where: objectId: message.answer.objectId, (err, res, body, success)->
+                unless success then cb(err)
+                else
+                    answer = body[0] 
+                    kaiseki.getObjects 'Question', where: objectId: message.question.objectId, (err, res, body, success)->
+                        unless success then cb(err)
+                        else 
+                            question = body[0]
+                            kaiseki.getObjects 'Patron', where: objectId: question.patron.objectId, (err, res, body, success)->
+                                if err? then cb(err)
+                                else
+                                    patron = body[0]
+                                    cb(null, patron, question, answer)
+
+exports.getMessage = getMessage
 exports.createQuestion = createQuestion
 exports.createAnswer = createAnswer
 exports.getAnswers = getAnswers

@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
+var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getMessage, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -171,6 +171,60 @@ addAnswerToMessage = function(answerId, messageId, cb) {
     }
   });
 };
+
+getMessage = function(messageId, cb) {
+  return kaiseki.getObjects('Message', {
+    where: {
+      objectId: messageId
+    }
+  }, function(err, res, body, success) {
+    var message;
+    if (!success) {
+      return cb(err);
+    } else {
+      message = body[0];
+      return kaiseki.getObjects('Answer', {
+        where: {
+          objectId: message.answer.objectId
+        }
+      }, function(err, res, body, success) {
+        var answer;
+        if (!success) {
+          return cb(err);
+        } else {
+          answer = body[0];
+          return kaiseki.getObjects('Question', {
+            where: {
+              objectId: message.question.objectId
+            }
+          }, function(err, res, body, success) {
+            var question;
+            if (!success) {
+              return cb(err);
+            } else {
+              question = body[0];
+              return kaiseki.getObjects('Patron', {
+                where: {
+                  objectId: question.patron.objectId
+                }
+              }, function(err, res, body, success) {
+                var patron;
+                if (err != null) {
+                  return cb(err);
+                } else {
+                  patron = body[0];
+                  return cb(null, patron, question, answer);
+                }
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+};
+
+exports.getMessage = getMessage;
 
 exports.createQuestion = createQuestion;
 
