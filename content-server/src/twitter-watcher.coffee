@@ -2,6 +2,9 @@ Twit = require 'twit'
 settings = require '../settings.json'
 db = require './db.js'
 events = require 'events'
+querystring = require('querystring')
+http = require('http')
+fs = require('fs')
 
 T = new Twit
     consumer_key: settings.twitter.api_key
@@ -22,6 +25,33 @@ tweetBack = (answer, handle, tweet_id)->
         (err, reply)->
             if err? then console.error err
             else console.log 'TW: Replied to tweet.'
+
+PostCode = (url)->
+    # Build the post string from an object
+    post_data = querystring.stringify 
+        'url' : url
+
+    # An object of options to indicate where to post to
+    post_options =
+    host: 'printer.gofreerange.com'
+    port: '80'
+    path: '/print/8m3m5y0s8a5w8k7t'
+    method: 'POST'
+    headers: 
+        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Length': post_data.length
+
+    # Set up the request
+    post_req = http.request post_options, (res)->
+        res.setEncoding('utf8')
+        res.on('data', (chunk)-> console.log('Response: ' + chunk))
+
+    # post the data
+    post_req.write(post_data)
+    post_req.end()
+
+print = (messageId)->
+    PostCode('http://charl.to:3000/message/'+messageId)
 
 # init tweet handler
 # exports.init = ->
@@ -48,6 +78,7 @@ stream.on 'tweet', (tweet)->
                     else 
                         console.log 'TW: Successfully created new message in db.'
                         tweetBack(answerBody, question.patron.handle, tweet.id_str)
+                        print(messageId)
     tweetEvent.emit('tweet')
     # tweetEvent
 
