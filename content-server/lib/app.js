@@ -25,6 +25,7 @@ exports.init = function() {
     app.use(express.errorHandler());
   }
   app.get('/', routes.index);
+  app.get('/testPrint', routes.testPrint);
   app.get('/message/:id', routes.message);
   return http.createServer(app).listen(app.get('port'), function() {
     return console.log('St. Martyr Bride running on port ' + app.get('port'));

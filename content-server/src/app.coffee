@@ -23,6 +23,7 @@ exports.init = ->
 	if ('development' == app.get('env')) then app.use express.errorHandler()
 
 	app.get('/', routes.index)
+	app.get('/testPrint', routes.testPrint)
 	app.get('/message/:id', routes.message)
 
 	http.createServer(app).listen app.get('port'), ->
