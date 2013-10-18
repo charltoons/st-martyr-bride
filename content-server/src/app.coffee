@@ -24,6 +24,7 @@ exports.init = ->
 
 	app.get('/', routes.index)
 	app.get('/testPrint', routes.testPrint)
+	app.get('/queueTest', routes.queueTest)
 	app.get('/message/:id', routes.message)
 
 	http.createServer(app).listen app.get('port'), ->

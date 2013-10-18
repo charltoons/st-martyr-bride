@@ -2,7 +2,7 @@ extends layout
 
 block content
     h1= title
-    h2 Today's Stats
+    h2 Today's Stats (last 12 hours)
         ul
             - for value, stat in today
                 li= value+' '+stat
@@ -10,3 +10,5 @@ block content
         ul
             - for value, stat in overall
                 li= value+' '+stat
+    a(href="/queueTest")
+        button Test Printer

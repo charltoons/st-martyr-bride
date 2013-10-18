@@ -54,7 +54,7 @@ exports.message = function(req, res) {
   });
 };
 
-exports.testPrint = function(req, res) {
+exports.queueTest = function(req, res) {
   var PostCode;
   PostCode = function(url) {
     var post_data, post_options, post_req;
@@ -81,5 +81,9 @@ exports.testPrint = function(req, res) {
     return post_req.end();
   };
   PostCode('http://charl.to:3000/testPrint');
+  return res.redirect('/');
+};
+
+exports.testPrint = function(req, res) {
   return res.render('testPrint');
 };
