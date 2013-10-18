@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, count, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getMessage, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
+var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, count, countToday, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getMessage, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -193,6 +193,39 @@ exports.countQuestions = function(cb) {
 
 exports.countPatrons = function(cb) {
   return count('Patron', cb);
+};
+
+countToday = function(className, cb) {
+  var beforeBound, params;
+  beforeBound = new Date();
+  beforeBound.setHours(beforeBound.getHours() - 12);
+  params = {
+    count: 1,
+    limit: 0,
+    where: {
+      createdAt: {
+        '$gte': {
+          __type: 'Date',
+          iso: beforeBound.toISOString()
+        }
+      }
+    }
+  };
+  return kaiseki.getObjects(className, params, function(err, res, body, success) {
+    if (!success) {
+      return cb(err);
+    } else {
+      return cb(null, body.count);
+    }
+  });
+};
+
+exports.countTodayQuestions = function(cb) {
+  return countToday('Question', cb);
+};
+
+exports.countTodayPatrons = function(cb) {
+  return countToday('Patron', cb);
 };
 
 getMessage = function(messageId, cb) {

@@ -116,6 +116,23 @@ count = (className, cb)->
 exports.countQuestions = (cb)-> count 'Question', cb
 exports.countPatrons = (cb)-> count 'Patron', cb
 
+countToday = (className, cb)->
+    beforeBound = new Date()
+    beforeBound.setHours(beforeBound.getHours() - 12)
+    params = 
+        count: 1
+        limit: 0
+        where:
+            createdAt: 
+                '$gte': 
+                    __type: 'Date'
+                    iso: beforeBound.toISOString()
+    kaiseki.getObjects className, params, (err, res, body, success)->
+        unless success then cb(err)
+        else cb null, body.count
+exports.countTodayQuestions = (cb)-> countToday 'Question', cb
+exports.countTodayPatrons = (cb)-> countToday 'Patron', cb
+
 getMessage = (messageId, cb)->
     kaiseki.getObjects 'Message', where: objectId: messageId, (err, res, body, success)->
         unless success then cb(err)

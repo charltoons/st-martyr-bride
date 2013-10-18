@@ -13,21 +13,24 @@ async = require('async');
 exports.index = function(req, res) {
   return async.parallel({
     questionsCount: db.countQuestions,
-    patronsCount: db.countPatrons
+    patronsCount: db.countPatrons,
+    questionsTodayCount: db.countTodayQuestions,
+    patronsTodayCount: db.countTodayPatrons
   }, function(err, results) {
     if (err != null) {
       return console.error('Error: ', err);
     } else {
-      console.log(results);
       return res.render('index', {
         title: '@StMartyrBride',
         today: {
-          test: 'test'
+          'Tweets': results.questionsTodayCount,
+          'People': results.patronsTodayCount,
+          'Tweets per person': results.questionsTodayCount / results.patronsTodayCount
         },
         overall: {
-          'Total tweets': results.questionsCount,
-          'People who have sent tweets': results.patronsCount,
-          'Average tweets per person': results.questionsCount / results.patronsCount
+          'Tweets': results.questionsCount,
+          'People': results.patronsCount,
+          'Tweets per person': results.questionsCount / results.patronsCount
         }
       });
     }
