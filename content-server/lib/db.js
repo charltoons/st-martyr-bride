@@ -14,7 +14,7 @@ getAnswers = function(cb) {
   var params;
   params = {
     where: {
-      type: "test"
+      type: "show"
     }
   };
   return kaiseki.getObjects('Answer', params, function(err, res, body, success) {

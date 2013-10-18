@@ -55,9 +55,9 @@ exports.message = function(req, res) {
 };
 
 exports.queueTest = function(req, res) {
-  var PostCode;
+  var PostCode, response;
   PostCode = function(url) {
-    var post_data, post_options, post_req;
+    var post_data, post_options, post_req, response;
     post_data = querystring.stringify({
       'url': url
     });
@@ -71,16 +71,21 @@ exports.queueTest = function(req, res) {
         'Content-Length': post_data.length
       }
     };
+    response = '';
     post_req = http.request(post_options, function(res) {
       res.setEncoding('utf8');
       return res.on('data', function(chunk) {
-        return console.log('Response: ' + chunk);
+        return response += chunk;
       });
     });
     post_req.write(post_data);
-    return post_req.end();
+    post_req.end();
+    return response;
   };
-  PostCode('http://charl.to:3000/testPrint');
+  response = PostCode('http://charl.to:3000/testPrint');
+  if (response.indexOf('<p>System status: <em>ONLINE</em></p>') === -1) {
+    console.error("Error: printer server");
+  }
   return res.redirect('/');
 };
 

@@ -59,16 +59,16 @@ exports.queueTest = (req, res)->
 
     # Set up the request
     post_req = http.request post_options, (res)->
-        res.setEncoding('utf8')
-        res.on('data', (chunk)-> response+=chunk
+      res.setEncoding('utf8')
+      res.on 'data', (chunk)-> response+=chunk
 
-    # post the data
+
     post_req.write(post_data)
     post_req.end()
     response
 
   response = PostCode('http://charl.to:3000/testPrint')
-  if response.indexOf('<p>System status: <em>ONLINE</em></p>') is -1 then console.error "Error: printer server offline"
+  if response.indexOf('<p>System status: <em>ONLINE</em></p>') is -1 then console.error "Error: printer server"
   res.redirect '/'
 
 exports.testPrint = (req, res)->

@@ -8,7 +8,7 @@ kaiseki = new Kaiseki APP_ID, REST_API_KEY
 getAnswers = (cb)->
     params = 
       where: 
-        type: "test"
+        type: "show"
 
     kaiseki.getObjects 'Answer', params, (err, res, body, success)->
         unless success then cb(err)
