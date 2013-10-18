@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getMessage, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
+var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, count, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getMessage, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -172,6 +172,29 @@ addAnswerToMessage = function(answerId, messageId, cb) {
   });
 };
 
+count = function(className, cb) {
+  var params;
+  params = {
+    count: 1,
+    limit: 0
+  };
+  return kaiseki.getObjects(className, params, function(err, res, body, success) {
+    if (!success) {
+      return cb(err);
+    } else {
+      return cb(null, body.count);
+    }
+  });
+};
+
+exports.countQuestions = function(cb) {
+  return count('Question', cb);
+};
+
+exports.countPatrons = function(cb) {
+  return count('Patron', cb);
+};
+
 getMessage = function(messageId, cb) {
   return kaiseki.getObjects('Message', {
     where: {
@@ -237,3 +260,5 @@ exports.getRandomAnswer = getRandomAnswer;
 exports.createMessage = createMessage;
 
 exports.addAnswerToMessage = addAnswerToMessage;
+
+exports.count = count;

@@ -106,6 +106,16 @@ addAnswerToMessage = (answerId, messageId, cb)->
         unless success then cb(err)
         else cb(null, true)
 
+count = (className, cb)->
+    params =
+        count: 1
+        limit: 0
+    kaiseki.getObjects className, params, (err, res, body, success)->
+        unless success then cb(err)
+        else cb null, body.count
+exports.countQuestions = (cb)-> count 'Question', cb
+exports.countPatrons = (cb)-> count 'Patron', cb
+
 getMessage = (messageId, cb)->
     kaiseki.getObjects 'Message', where: objectId: messageId, (err, res, body, success)->
         unless success then cb(err)
@@ -132,3 +142,4 @@ exports.getAnswers = getAnswers
 exports.getRandomAnswer = getRandomAnswer
 exports.createMessage = createMessage
 exports.addAnswerToMessage = addAnswerToMessage
+exports.count = count

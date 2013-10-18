@@ -9,7 +9,8 @@
     "express": "3.4.0",
     "jade": "*",
     "kaiseki": "~0.4.0",
-    "twit": "~1.1.11"
+    "twit": "~1.1.11",
+    "async": "~0.2.9"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

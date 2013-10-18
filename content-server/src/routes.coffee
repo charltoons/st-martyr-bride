@@ -2,9 +2,26 @@ db = require ('./db.js')
 querystring = require('querystring')
 http = require('http')
 fs = require('fs')
+async = require('async')
 
 exports.index = (req, res)->
-  res.render 'index',  title: 'Express' 
+
+  async.parallel
+    questionsCount: db.countQuestions
+    patronsCount: db.countPatrons,
+    (err, results)->
+      if err? then console.error 'Error: ', err
+      else 
+        console.log results
+        res.render 'index',  
+          title: '@StMartyrBride'
+          today: 
+            test: 'test'
+          overall:
+            'Total tweets': results.questionsCount
+            'People who have sent tweets': results.patronsCount
+            'Average tweets per person': (results.questionsCount/results.patronsCount)
+
 
 exports.message = (req, res)->
     messageId = req.params.id

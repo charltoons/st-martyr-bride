@@ -1,4 +1,4 @@
-var db, fs, http, querystring;
+var async, db, fs, http, querystring;
 
 db = require('./db.js');
 
@@ -8,9 +8,29 @@ http = require('http');
 
 fs = require('fs');
 
+async = require('async');
+
 exports.index = function(req, res) {
-  return res.render('index', {
-    title: 'Express'
+  return async.parallel({
+    questionsCount: db.countQuestions,
+    patronsCount: db.countPatrons
+  }, function(err, results) {
+    if (err != null) {
+      return console.error('Error: ', err);
+    } else {
+      console.log(results);
+      return res.render('index', {
+        title: '@StMartyrBride',
+        today: {
+          test: 'test'
+        },
+        overall: {
+          'Total tweets': results.questionsCount,
+          'People who have sent tweets': results.patronsCount,
+          'Average tweets per person': results.questionsCount / results.patronsCount
+        }
+      });
+    }
   });
 };
 
