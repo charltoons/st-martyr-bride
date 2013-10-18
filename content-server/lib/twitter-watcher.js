@@ -92,7 +92,7 @@ stream.on('tweet', function(tweet) {
         if (err != null) {
           return console.error(err);
         } else {
-          return db.getRandomAnswer('test', function(err, answerId, answerBody) {
+          return db.getRandomAnswer('show', function(err, answerId, answerBody) {
             if (err != null) {
               return console.error(err);
             } else {

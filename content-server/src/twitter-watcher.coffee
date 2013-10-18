@@ -71,7 +71,7 @@ stream.on 'tweet', (tweet)->
         if err? then console.error err
         else db.createMessage questionId, (err, messageId)->
             if err? then console.error err
-            else db.getRandomAnswer 'test', (err, answerId, answerBody)->
+            else db.getRandomAnswer 'show', (err, answerId, answerBody)->
                 if err? then console.error err
                 else db.addAnswerToMessage answerId, messageId, (err, success)->
                     if err? then console.error err
