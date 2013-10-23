@@ -1,4 +1,4 @@
-#include <SPI.h>
+ #include <SPI.h>
 #include <Ethernet.h>
 #include <SD.h>
 #include <EEPROM.h>
@@ -296,3 +296,4 @@ void loop() {
     }
   }
 }
+
