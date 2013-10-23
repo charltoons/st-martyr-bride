@@ -284,10 +284,10 @@ Bounce bouncer = Bounce(buttonPin, 5); // 5 millisecond debounce
 
 void loop() {
   if (downloadWaiting) {
-    bouncer.update();
-    if (bouncer.read() == HIGH) {
+    // bouncer.update();
+    // if (bouncer.read() == HIGH) {
       printFromDownload();
-    }
+    // }
   } else {
     checkForDownload();
     if (!downloadWaiting) {
