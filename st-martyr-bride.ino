@@ -25,7 +25,7 @@ const char printerType[] = "A2-raw";
 const char host[] = "printer.gofreerange.com"; // the host of the backend server
 const unsigned int port = 80;
 
-const unsigned long pollingDelay = 10000; // delay between polling requests (milliseconds)
+const unsigned long pollingDelay = 5000; // delay between polling requests (milliseconds)
 
 const byte printer_TX_Pin = 9; // this is the yellow wire
 const byte printer_RX_Pin = 8; // this is the green wire
