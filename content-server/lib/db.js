@@ -132,7 +132,19 @@ getRandomAnswer = function(type, cb) {
         return cb(err, randomAnswer.objectId, randomAnswer.body);
       }
     });
+  } else {
+    return cb('Error: no type sent to db.getRandomAnswer');
   }
+};
+
+getAnswers = function(cb) {
+  return kaiseki.getObjects('Answer', function(err, res, body, success) {
+    if (!success) {
+      return cb(err);
+    } else {
+      return cb(err, body);
+    }
+  });
 };
 
 createMessage = function(questionId, cb) {

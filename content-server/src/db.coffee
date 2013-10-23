@@ -81,7 +81,13 @@ getRandomAnswer = (type, cb)->
             else 
                 randomAnswer = body[Math.floor(Math.random() * body.length)]
                 cb(err, randomAnswer.objectId, randomAnswer.body)
+    else 
+        cb 'Error: no type sent to db.getRandomAnswer'
 
+getAnswers = (cb)->
+    kaiseki.getObjects 'Answer', (err, res, body, success)->
+        unless success then cb(err)
+        else cb(err, body)
 createMessage = (questionId, cb)->
     m = 
         question:

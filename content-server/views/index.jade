@@ -2,6 +2,8 @@ extends layout
 
 block content
     h1= title
+    a(href="/queueTest")
+        button Test Printer
     h2 Today's Stats (last 12 hours)
         ul
             - for value, stat in today
@@ -10,5 +12,16 @@ block content
         ul
             - for value, stat in overall
                 li= value+' '+stat
-    a(href="/queueTest")
-        button Test Printer
+    table.answers
+        tbody
+            tr
+                td Id
+                td Message
+                td Type
+            - for (var i=0; i<answers.length; i++) {
+                tr(id=answers[i].objectId)
+                    td= i+1
+                    td= answers[i].body
+                    td= answers[i].type
+            - }
+    

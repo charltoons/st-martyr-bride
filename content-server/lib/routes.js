@@ -15,11 +15,13 @@ exports.index = function(req, res) {
     questionsCount: db.countQuestions,
     patronsCount: db.countPatrons,
     questionsTodayCount: db.countTodayQuestions,
-    patronsTodayCount: db.countTodayPatrons
+    patronsTodayCount: db.countTodayPatrons,
+    answers: db.getAnswers
   }, function(err, results) {
     if (err != null) {
       return console.error('Error: ', err);
     } else {
+      console.log(results.answers);
       return res.render('index', {
         title: '@StMartyrBride',
         today: {
@@ -31,7 +33,8 @@ exports.index = function(req, res) {
           'Tweets': results.questionsCount,
           'People': results.patronsCount,
           'Tweets per person': results.questionsCount / results.patronsCount
-        }
+        },
+        answers: results.answers
       });
     }
   });

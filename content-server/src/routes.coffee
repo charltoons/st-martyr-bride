@@ -10,10 +10,12 @@ exports.index = (req, res)->
     questionsCount: db.countQuestions
     patronsCount: db.countPatrons
     questionsTodayCount: db.countTodayQuestions
-    patronsTodayCount: db.countTodayPatrons,
+    patronsTodayCount: db.countTodayPatrons
+    answers: db.getAnswers,
     (err, results)->
       if err? then console.error 'Error: ', err
       else 
+        console.log results.answers
         res.render 'index',  
           title: '@StMartyrBride'
           today: 
@@ -24,6 +26,7 @@ exports.index = (req, res)->
             'Tweets': results.questionsCount
             'People': results.patronsCount
             'Tweets per person': (results.questionsCount/results.patronsCount)
+          answers: results.answers
 
 
 exports.message = (req, res)->
