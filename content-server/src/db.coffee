@@ -67,8 +67,15 @@ createAnswer = (body, type, cb)->
         unless success then cb(err)
         else
             cb(null, body.objectId)
+
 deleteAnswer = (id, cb)->
     kaiseki.deleteObject 'Answer', id, (err, res, body, success)->
+        unless success then cb(err)
+        else
+            cb(null, body.objectId)
+
+editAnswer = (id, body, cb)->
+    kaiseki.updateObject 'Answer', id, body: body, (err, res, body, success)->
         unless success then cb(err)
         else
             cb(null, body.objectId)
@@ -167,6 +174,7 @@ exports.getMessage = getMessage
 exports.createQuestion = createQuestion
 exports.createAnswer = createAnswer
 exports.deleteAnswer = deleteAnswer
+exports.editAnswer = editAnswer
 exports.getAnswers = getAnswers
 exports.getRandomAnswer = getRandomAnswer
 exports.createMessage = createMessage

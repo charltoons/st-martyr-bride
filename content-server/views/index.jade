@@ -12,25 +12,34 @@ block content
     ul
         - for value, stat in overall
             li= value+' '+stat
-    form(action="/answer", method="POST")
-        table.answers
-            tbody
-                tr
-                    td Id
-                    td Message
-                    td Type
-                    td Edit
-                    td Delete
-                - for (var i=0; i<answers.length; i++) {
+
+    h2 Responses
+    table.answers
+        tbody
+            tr
+                td Id
+                td Message
+                td Type
+                td Edit
+                td Delete
+            - for (var i=0; i<answers.length; i++) {
+                form(action="/answers/edit/"+answers[i].objectId, method="POST")
                     tr(id=answers[i].objectId)
                         td= i+1
-                        td= answers[i].body
+                        td
+                            .static= answers[i].body
+                            input.update.text(type="text", name="answer", value=answers[i].body)
                         td= answers[i].type
                         td
-                            a(href="#") Edit
+                            .static
+                                a.edit(href="#") Edit
+                            input.update.confirm(type="submit", value="Confirm")
                         td 
-                            a(href="/answers/delete/"+answers[i].objectId) Delete
-                - }
+                            .static
+                                a(href="/answers/delete/"+answers[i].objectId) Delete
+                            button.update.cancel Cancel
+            - }
+            form(action="/answer", method="POST")
                 tr
                     td
                         button#add-answer +

@@ -30,6 +30,7 @@ exports.init = function() {
   app.get('/message/:id', routes.message);
   app.post('/answer', routes.answer);
   app.get('/answers/delete/:id', routes.deleteAnswer);
+  app.post('/answers/edit/:id', routes.editAnswer);
   return http.createServer(app).listen(app.get('port'), function() {
     return console.log('St. Martyr Bride running on port ' + app.get('port'));
   });

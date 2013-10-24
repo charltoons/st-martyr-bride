@@ -108,3 +108,10 @@ exports.deleteAnswer = function(req, res) {
     return res.redirect('/');
   });
 };
+
+exports.editAnswer = function(req, res) {
+  return db.editAnswer(req.params.id, req.body.answer, function(err, result) {
+    console.log('Edited Answer');
+    return res.redirect('/');
+  });
+};

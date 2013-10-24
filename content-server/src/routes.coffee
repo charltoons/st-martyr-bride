@@ -85,3 +85,8 @@ exports.deleteAnswer = (req, res)->
   db.deleteAnswer req.params.id, (err, result)->
     console.log 'Deleted answer'
     res.redirect '/'
+
+exports.editAnswer = (req, res)->
+  db.editAnswer req.params.id, req.body.answer, (err, result)->
+    console.log 'Edited Answer'
+    res.redirect '/'
