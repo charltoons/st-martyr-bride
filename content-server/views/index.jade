@@ -19,11 +19,17 @@ block content
                     td Id
                     td Message
                     td Type
+                    td Edit
+                    td Delete
                 - for (var i=0; i<answers.length; i++) {
                     tr(id=answers[i].objectId)
                         td= i+1
                         td= answers[i].body
                         td= answers[i].type
+                        td
+                            a(href="#") Edit
+                        td 
+                            a(href="/answers/delete/"+answers[i].objectId) Delete
                 - }
                 tr
                     td
@@ -32,6 +38,8 @@ block content
                         input#new-answer(type="text", name="answer")
                     td
                         input#confirm(type="submit", value="Confirm")
+                    td
+                    td
     script(src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js")
     script(src="/javascripts/admin.js")
 

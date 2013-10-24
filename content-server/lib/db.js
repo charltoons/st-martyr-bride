@@ -1,4 +1,4 @@
-var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, count, countToday, createAnswer, createMessage, createPatron, createQuestion, getAnswers, getMessage, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
+var APP_ID, Kaiseki, REST_API_KEY, addAnswerToMessage, count, countToday, createAnswer, createMessage, createPatron, createQuestion, deleteAnswer, getAnswers, getMessage, getPatron, getRandomAnswer, kaiseki, newQuestion, settings;
 
 Kaiseki = require('kaiseki');
 
@@ -107,6 +107,16 @@ createAnswer = function(body, type, cb) {
     type: type
   };
   return kaiseki.createObject('Answer', a, function(err, res, body, success) {
+    if (!success) {
+      return cb(err);
+    } else {
+      return cb(null, body.objectId);
+    }
+  });
+};
+
+deleteAnswer = function(id, cb) {
+  return kaiseki.deleteObject('Answer', id, function(err, res, body, success) {
     if (!success) {
       return cb(err);
     } else {
@@ -297,6 +307,8 @@ exports.getMessage = getMessage;
 exports.createQuestion = createQuestion;
 
 exports.createAnswer = createAnswer;
+
+exports.deleteAnswer = deleteAnswer;
 
 exports.getAnswers = getAnswers;
 

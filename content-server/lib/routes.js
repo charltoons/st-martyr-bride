@@ -101,3 +101,10 @@ exports.answer = function(req, res) {
     return res.redirect('/');
   });
 };
+
+exports.deleteAnswer = function(req, res) {
+  return db.deleteAnswer(req.params.id, function(err, result) {
+    console.log('Deleted answer');
+    return res.redirect('/');
+  });
+};

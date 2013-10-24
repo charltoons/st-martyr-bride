@@ -80,3 +80,8 @@ exports.answer = (req, res)->
   db.createAnswer req.body.answer, 'show', (err, result)->
     console.log 'Added new answer'
     res.redirect '/'
+
+exports.deleteAnswer = (req, res)->
+  db.deleteAnswer req.params.id, (err, result)->
+    console.log 'Deleted answer'
+    res.redirect '/'

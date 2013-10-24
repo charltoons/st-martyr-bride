@@ -67,6 +67,11 @@ createAnswer = (body, type, cb)->
         unless success then cb(err)
         else
             cb(null, body.objectId)
+deleteAnswer = (id, cb)->
+    kaiseki.deleteObject 'Answer', id, (err, res, body, success)->
+        unless success then cb(err)
+        else
+            cb(null, body.objectId)
 
 # returns a random answer of type type 
 # if no type is specified, then it will return a
@@ -161,6 +166,7 @@ getMessage = (messageId, cb)->
 exports.getMessage = getMessage
 exports.createQuestion = createQuestion
 exports.createAnswer = createAnswer
+exports.deleteAnswer = deleteAnswer
 exports.getAnswers = getAnswers
 exports.getRandomAnswer = getRandomAnswer
 exports.createMessage = createMessage
