@@ -21,7 +21,6 @@ exports.index = function(req, res) {
     if (err != null) {
       return console.error('Error: ', err);
     } else {
-      console.log(results.answers);
       return res.render('index', {
         title: '@StMartyrBride',
         today: {
@@ -94,4 +93,11 @@ exports.queueTest = function(req, res) {
 
 exports.testPrint = function(req, res) {
   return res.render('testPrint');
+};
+
+exports.answer = function(req, res) {
+  return db.createAnswer(req.body.answer, 'show', function(err, result) {
+    console.log('Added new answer');
+    return res.redirect('/');
+  });
 };

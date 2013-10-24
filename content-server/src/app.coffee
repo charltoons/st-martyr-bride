@@ -26,6 +26,7 @@ exports.init = ->
 	app.get('/testPrint', routes.testPrint)
 	app.get('/queueTest', routes.queueTest)
 	app.get('/message/:id', routes.message)
+	app.post('/answer', routes.answer)
 
 	http.createServer(app).listen app.get('port'), ->
 	  console.log('St. Martyr Bride running on port ' + app.get('port'))

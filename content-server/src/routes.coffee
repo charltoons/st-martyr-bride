@@ -15,7 +15,6 @@ exports.index = (req, res)->
     (err, results)->
       if err? then console.error 'Error: ', err
       else 
-        console.log results.answers
         res.render 'index',  
           title: '@StMartyrBride'
           today: 
@@ -76,3 +75,8 @@ exports.queueTest = (req, res)->
 
 exports.testPrint = (req, res)->
     res.render 'testPrint'
+
+exports.answer = (req, res)->
+  db.createAnswer req.body.answer, 'show', (err, result)->
+    console.log 'Added new answer'
+    res.redirect '/'
